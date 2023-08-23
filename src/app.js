@@ -1,3 +1,4 @@
+#!/usr/bin/env node
 import { Command } from "commander";
 
 const cli = new Command();
@@ -7,11 +8,10 @@ cli
   .description("A CLI to make Codeforces interaction better.");
 
 cli
-  .command("parse <source>")
+  .command("parse <url>")
   .description("Parse a problem")
-  .action((source) => {
-    console.log(source);
+  .action((link) => {
+    console.log(link);
   });
 
 cli.parse();
-
