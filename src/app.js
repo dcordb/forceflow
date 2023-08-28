@@ -1,5 +1,6 @@
 #!/usr/bin/env node
 import { Command } from "commander";
+import { initDaemon } from "./daemon.js";
 
 const cli = new Command();
 
@@ -8,10 +9,8 @@ cli
   .description("A CLI to make Codeforces interaction better.");
 
 cli
-  .command("parse <url>")
-  .description("Parse a problem")
-  .action((link) => {
-    console.log(link);
-  });
+  .command("init")
+  .description("Initialize Forceflow daemon.")
+  .action(initDaemon);
 
 cli.parse();
