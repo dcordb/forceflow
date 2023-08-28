@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 import { Command } from "commander";
-import { initDaemon } from "./daemon.js";
+import { initDaemon, stopDaemon } from "./daemon.js";
 
 const cli = new Command();
 
@@ -12,5 +12,7 @@ cli
   .command("init")
   .description("Initialize Forceflow daemon.")
   .action(initDaemon);
+
+cli.command("stop").description("Stop Forceflow daemon.").action(stopDaemon);
 
 cli.parse();
