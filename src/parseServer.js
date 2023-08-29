@@ -1,27 +1,61 @@
-import express from "express";
 import bodyParser from "body-parser";
+import express from "express";
+import * as fs from "node:fs";
+import process from "node:process";
+import { DAEMON_FILE } from "./config.js";
 
-const port = 10043;
-const app = express();
+function fileExistSync(path) {
+  try {
+    fs.accessSync(path);
+    return true;
+  } catch (e) {}
 
-app.use(bodyParser.json());
+  return false;
+}
 
-app.post("/", (req, res) => {
-  const data = req.body;
+function setupDaemonFile() {
+  if (fileExistSync(DAEMON_FILE)) process.exit(0);
 
-  console.log(`Problem name: ${data.name}`);
-  console.log(`Problem group: ${data.group}`);
-  console.log("Full body:");
-  console.log(JSON.stringify(data, null, 4));
+  fs.writeFileSync(DAEMON_FILE, JSON.stringify({ pid: process.pid }));
+}
 
-  res.sendStatus(200);
-});
+function setupServer() {
+  const port = 10043;
+  const app = express();
 
-app.listen(port, (err) => {
-  if (err) {
-    console.error(err);
-    process.exit(1);
+  app.use(bodyParser.json());
+
+  app.post("/", (req, res) => {
+    const data = req.body;
+    console.log(data);
+    res.sendStatus(200);
+  });
+
+  app.listen(port, (err) => {
+    if (err) {
+      console.error(err);
+      process.exit(1);
+    }
+
+    console.log(`Listening on port ${port}`);
+  });
+}
+
+function cleanupDaemonFile() {
+  if (!fileExistSync(DAEMON_FILE)) return;
+
+  try {
+    fs.unlinkSync(DAEMON_FILE);
+  } catch (e) {
+    console.error("failed to delete daemonInfo file");
   }
+}
 
-  console.log(`Listening on port ${port}`);
+process.on("SIGTERM", () => {
+  process.exit(0);
 });
+
+process.on("exit", cleanupDaemonFile);
+
+setupDaemonFile();
+setupServer();
