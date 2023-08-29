@@ -4,6 +4,7 @@ import { fileOrDirExists } from "./utils.js";
 import { mkdir } from "node:fs/promises";
 
 const CONFIG_DIR = path.join(os.homedir(), ".forceflow");
+const DAEMON_FILE = path.join(CONFIG_DIR, "daemon.json");
 
 async function createConfigDir() {
   const exists = await fileOrDirExists(CONFIG_DIR);
@@ -13,4 +14,4 @@ async function createConfigDir() {
 
 createConfigDir();
 
-export { CONFIG_DIR };
+export { CONFIG_DIR, DAEMON_FILE };
