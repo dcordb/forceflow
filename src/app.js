@@ -8,11 +8,7 @@ cli
   .name("forceflow")
   .description("A CLI to make Codeforces interaction better.");
 
-cli
-  .command("init")
-  .description("Initialize Forceflow daemon.")
-  .action(initDaemon);
-
+cli.command("start").description("Start Forceflow daemon.").action(initDaemon);
 cli.command("stop").description("Stop Forceflow daemon.").action(stopDaemon);
 
 cli.parse();
