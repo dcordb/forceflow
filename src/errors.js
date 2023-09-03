@@ -11,4 +11,10 @@ class DaemonError extends BaseError {
   }
 }
 
-export { DaemonError };
+class LoginError extends BaseError {
+  constructor(message) {
+    super(message);
+  }
+}
+
+export { DaemonError, LoginError };
