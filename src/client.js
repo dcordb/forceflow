@@ -23,6 +23,10 @@ class Codeforces extends OnlineJudgeClient {
     );
   }
 
+  get cookieJar() {
+    return this.#cookieJar;
+  }
+
   static async #getCsrfToken(client) {
     let result = null;
 
