@@ -8,7 +8,7 @@
   },
   "scripts": {
     "start": "node --loader=import-jsx src/app.js",
-    "test": "mocha"
+    "test": "mocha test/**/*.test.js"
   },
   "author": "dcordb",
   "license": "ISC",

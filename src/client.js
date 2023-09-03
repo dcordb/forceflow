@@ -2,6 +2,9 @@ import axios from "axios";
 import { wrapper } from "axios-cookiejar-support";
 import { CookieJar } from "tough-cookie";
 import { LoginError } from "./errors.js";
+import * as fs from "node:fs/promises";
+import { CONFIG_DIR } from "./config.js";
+import path from "node:path";
 
 class OnlineJudgeClient {
   baseUrl;
@@ -11,10 +14,11 @@ class OnlineJudgeClient {
 class Codeforces extends OnlineJudgeClient {
   baseUrl = "https://codeforces.com";
   #cookieJar;
+  static cookieFile = path.join(CONFIG_DIR, "cookies.json");
 
-  constructor() {
+  constructor(cookieJar) {
     super();
-    this.#cookieJar = new CookieJar();
+    this.#cookieJar = cookieJar || new CookieJar();
     this.client = wrapper(
       axios.create({
         jar: this.#cookieJar,
@@ -68,10 +72,23 @@ class Codeforces extends OnlineJudgeClient {
     if (!cookies.find((cookie) => cookie.key === "X-User"))
       throw new LoginError("Could not login. User or password are incorrect");
 
+    await Codeforces.#saveCookieJar(cf.cookieJar);
     return cf;
   }
 
-  static async initFromCookies(cookies) {}
+  static async #saveCookieJar(cookieJar) {
+    const cookieJson = cookieJar.toJSON();
+    await fs.writeFile(Codeforces.cookieFile, JSON.stringify(cookieJson));
+  }
+
+  static async initFromCookies() {
+    const cookieJson = await fs.readFile(Codeforces.cookieFile, {
+      encoding: "utf8",
+    });
+
+    const loadedCookieJar = CookieJar.fromJSON(JSON.parse(cookieJson));
+    return new Codeforces(loadedCookieJar);
+  }
 }
 
 export { Codeforces };
