@@ -32,14 +32,7 @@ class Codeforces extends OnlineJudgeClient {
   }
 
   static async #getCsrfToken(client) {
-    let result = null;
-
-    try {
-      result = await client.get("/enter");
-    } catch (err) {
-      throw new LoginError("Request to Codeforces failed");
-    }
-
+    let result = await client.get("/enter");
     const match = result.data.match(/csrf='(.+?)'/);
 
     if (!match) throw new LoginError("Could not find csrf_token");
@@ -50,7 +43,6 @@ class Codeforces extends OnlineJudgeClient {
   static async initFromAuth(user, password) {
     const cf = new Codeforces();
     const csrf_token = await Codeforces.#getCsrfToken(cf.client);
-
     const result = await cf.client.post(
       "/enter",
       {
@@ -88,6 +80,12 @@ class Codeforces extends OnlineJudgeClient {
 
     const loadedCookieJar = CookieJar.fromJSON(JSON.parse(cookieJson));
     return new Codeforces(loadedCookieJar);
+  }
+
+  async loggedIn() {
+    let result = await this.client.get("/");
+    const match = result.data.match(/handle = "([\s\S]+?)"/);
+    return Boolean(match);
   }
 }
 
