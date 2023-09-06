@@ -9,3 +9,5 @@ class Testcase {
     this.output = output;
   }
 }
+
+export { Testcase };
