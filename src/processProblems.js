@@ -4,6 +4,7 @@ import { CODE_DIR } from "./config.js";
 import { Contest, dumpContest } from "./entities/Contest.js";
 import { Problem, dumpProblem } from "./entities/Problem.js";
 import { Testcase } from "./entities/Testcase.js";
+import { daemonLogger as logger } from "./logger.js";
 
 function extractIdsFromUrl(url) {
   const regex =
@@ -36,6 +37,7 @@ function processProblem(problemData) {
   );
 
   const problem = new Problem(problemData.name, problemId, testcases, contest);
+  logger.debug(problem);
 
   const contestPath = path.join(CODE_DIR, contestId);
 
@@ -44,6 +46,8 @@ function processProblem(problemData) {
   } catch (e) {}
 
   dumpContest(contestPath, contest);
+
+  logger.info("Saved contest info");
 
   const problemPath = path.join(contestPath, problemId);
 
@@ -54,6 +58,7 @@ function processProblem(problemData) {
   }
 
   dumpProblem(problemPath, problem);
+  logger.info("Saved problem info");
 
   for (const test of testcases) {
     const inputTestName = path.join(problemPath, `${test.id}.in`);
@@ -62,7 +67,7 @@ function processProblem(problemData) {
     fs.writeFileSync(outputTestName, test.output);
   }
 
-  console.log("saved problem data successfully");
+  logger.info("Saved problem data successfully");
 }
 
 export { processProblem };
