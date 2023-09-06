@@ -34,7 +34,7 @@ function loadConfig() {
 }
 
 const configData = loadConfig();
-const CODE_DIR = configData.code_dir || path.join(CONFIG_DIR, "code");
+const CODE_DIR = path.join(CONFIG_DIR, configData.code_dir || "code");
 
 async function createCodeDir(dir) {
   const exists = await fileOrDirExists(dir);

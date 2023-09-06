@@ -3,6 +3,7 @@ import express from "express";
 import * as fs from "node:fs";
 import process from "node:process";
 import { DAEMON_FILE } from "./config.js";
+import { processProblem } from "./processProblems.js";
 
 function fileExistSync(path) {
   try {
@@ -26,8 +27,7 @@ function setupServer() {
   app.use(bodyParser.json());
 
   app.post("/", (req, res) => {
-    const data = req.body;
-    console.log(data);
+    processProblem(req.body);
     res.sendStatus(200);
   });
 
