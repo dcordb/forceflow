@@ -5,7 +5,7 @@ import path from "node:path";
 const DAEMON_LOG = path.join(CONFIG_DIR, "daemon.log");
 
 const daemonLogger = winston.createLogger({
-  level: "debug",
+  level: "info",
   transports: [new winston.transports.File({ filename: DAEMON_LOG })],
 });
 

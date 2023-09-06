@@ -25,6 +25,7 @@ function extractIdsFromUrl(url) {
 }
 
 function processProblem(problemData) {
+  logger.info(`Parsing problem ${problemData.name}`);
   const result = extractIdsFromUrl(problemData.url);
 
   if (!result) return;
