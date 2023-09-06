@@ -8,7 +8,10 @@ class LanguageMapper {
   }
 
   getLangConfig(extension) {
-    return this.mapper[extension].default;
+    const extVals = this.mapper.get(extension);
+    const alias = extVals.default;
+    const result = extVals.langConfigs.find((x) => x.alias === alias);
+    return result;
   }
 
   addLangConfig(extension, langConfig) {
