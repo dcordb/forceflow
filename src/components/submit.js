@@ -1,15 +1,10 @@
 import { useEffect, useMemo, useState } from "react";
-import process from "node:process";
-import path from "node:path";
-import { LanguageMapper } from "../entities/Languages.js";
-import { LANGS_FILE } from "../config.js";
-import { Solution } from "../entities/Solution.js";
-import { loadProblem, Problem } from "../entities/Problem.js";
 import { SuccessMessage, ErrorMessage } from "./messages.js";
 import { Codeforces } from "../client.js";
 import { Text, Box } from "ink";
 import TextInput from "ink-text-input";
 import Spinner from "ink-spinner";
+import { loadSolutionFromFile } from "../utils/utils.js";
 
 function Login({ setClient, setSuccesfullLogin, setError, setLoginBox }) {
   const [user, setUser] = useState("");
