@@ -20,4 +20,19 @@ function dumpProblem(problemDir, problem) {
   fs.writeFileSync(configFile, JSON.stringify(problem, null, 4));
 }
 
-export { Problem, dumpProblem };
+function loadProblem(problemDir) {
+  const file = path.join(problemDir, ".forceflow_problem");
+  let data = null;
+
+  try {
+    data = fs.readFileSync(file, {
+      encoding: "utf8",
+    });
+  } catch (e) {
+    return null;
+  }
+
+  return JSON.parse(data);
+}
+
+export { Problem, dumpProblem, loadProblem };

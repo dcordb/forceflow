@@ -1,6 +1,7 @@
 import { initDaemon, stopDaemon } from "./daemon.js";
 import { SuccessMessage, ErrorMessage } from "./components/messages.js";
 import { render } from "ink";
+import { Submit } from "./components/submit.js";
 
 function init() {
   let component = (
@@ -30,4 +31,8 @@ function stop() {
   render(component);
 }
 
-export { init, stop };
+async function submit(solutionPath) {
+  render(<Submit solutionPath={solutionPath} />);
+}
+
+export { init, stop, submit };

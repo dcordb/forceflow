@@ -12,10 +12,12 @@ function extractIdsFromUrl(url) {
   const match = url.match(regex);
 
   if (match) {
+    const contestType = match[1];
     const contestId = match[2];
     const problemId = match[3];
 
     return {
+      contestType,
       contestId,
       problemId,
     };
@@ -30,8 +32,8 @@ function processProblem(problemData) {
 
   if (!result) return;
 
-  const { contestId, problemId } = result;
-  const contest = new Contest(problemData.group, contestId);
+  const { contestType, contestId, problemId } = result;
+  const contest = new Contest(problemData.group, contestId, contestType);
 
   const testcases = problemData.tests.map(
     (test, id) => new Testcase(id + 1, test.input, test.output)
