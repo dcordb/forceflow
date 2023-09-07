@@ -49,12 +49,16 @@ class LanguageConfig {
   description;
   extension;
   langId;
+  compiler;
+  runner;
 
-  constructor(alias, description, extension, langId) {
+  constructor(alias, description, extension, langId, compiler, runner) {
     this.alias = alias;
     this.description = description;
     this.extension = extension;
     this.langId = langId;
+    this.compiler = compiler;
+    this.runner = runner;
   }
 }
 

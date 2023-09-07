@@ -23,4 +23,9 @@ cli
   .description("Open my submissions in a browser")
   .action(actions.mysubs);
 
+cli
+  .command("test <file>")
+  .description("Run a solution against testcases")
+  .action(actions.test);
+
 cli.parse();
