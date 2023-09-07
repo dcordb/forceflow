@@ -87,6 +87,41 @@ class Codeforces extends OnlineJudgeClient {
     const match = result.data.match(/handle = "([\s\S]+?)"/);
     return Boolean(match);
   }
+
+  #submitErrorMsg(body) {
+    const match = body.match(/error[a-zA-Z_\- ]*">(.*?)<\/span>/);
+    if (!match) return null;
+
+    return match[1];
+  }
+
+  async submit(solution) {
+    const csrf_token = await Codeforces.#getCsrfToken(this.client);
+    const source = await fs.readFile(solution.path, { encoding: "utf8" });
+    const contest = solution.problem.contest;
+
+    const result = await this.client.post(
+      `/${contest.type}/${contest.id}/submit`,
+      {
+        csrf_token: csrf_token,
+        action: "submitSolutionFormSubmitted",
+        submittedProblemIndex: solution.problem.id,
+        programTypeId: solution.language.langId,
+        contestId: contest.id,
+        source: source,
+        tabSize: "4",
+        sourceCodeConfirmed: "true",
+      },
+      {
+        params: { csrf_token: csrf_token },
+        headers: {
+          "content-type": "application/x-www-form-urlencoded",
+        },
+      }
+    );
+
+    return this.#submitErrorMsg(result.data);
+  }
 }
 
 export { Codeforces };

@@ -4,10 +4,12 @@ import path from "node:path";
 class Contest {
   name;
   id;
+  type;
 
-  constructor(name, id) {
+  constructor(name, id, type) {
     this.name = name;
     this.id = id;
+    this.type = type;
   }
 }
 

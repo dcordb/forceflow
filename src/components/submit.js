@@ -9,6 +9,7 @@ import { SuccessMessage, ErrorMessage } from "./messages.js";
 import { Codeforces } from "../client.js";
 import { Text, Box } from "ink";
 import TextInput from "ink-text-input";
+import Spinner from "ink-spinner";
 
 function Login({ setClient, setSuccesfullLogin, setError, setLoginBox }) {
   const [user, setUser] = useState("");
@@ -61,7 +62,41 @@ function Login({ setClient, setSuccesfullLogin, setError, setLoginBox }) {
 }
 
 function WatchSubmission({ client, solution }) {
-  return <SuccessMessage msg={"Logged in!"} />;
+  const [error, setError] = useState();
+  const [submitted, setSubmitted] = useState(false);
+
+  useEffect(() => {
+    const submit = async () => {
+      let msg = null;
+
+      try {
+        msg = await client.submit(solution);
+      } catch (e) {
+        setError(e.message);
+      }
+
+      if (msg) {
+        setError(msg);
+        return;
+      }
+
+      setSubmitted(true);
+    };
+
+    submit();
+  }, []);
+
+  if (error) return <ErrorMessage msg={error} />;
+  if (submitted) return <SuccessMessage msg={"Submitted!"} />;
+
+  return (
+    <>
+      <Text>
+        <Spinner type="dots" />
+        {" Submitting..."}
+      </Text>
+    </>
+  );
 }
 
 function Submit({ solutionPath }) {

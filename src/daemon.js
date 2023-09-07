@@ -9,7 +9,7 @@ async function initDaemon() {
   if (await fileOrDirExists(DAEMON_FILE))
     throw new DaemonError("Daemon could not be started");
 
-  const child = spawn("node", ["./src/parseServer.js"], {
+  const child = spawn("node", [`${process.env.FORCEFLOW}/src/parseServer.js`], {
     detached: true,
     stdio: "ignore",
   });
