@@ -1,4 +1,4 @@
-import * as fs from "node:fs/promises";
+import * as fs from "node:fs";
 
 class LanguageMapper {
   mapper;
@@ -22,13 +22,13 @@ class LanguageMapper {
     collection.addLang(langConfig);
   }
 
-  async dumps(configFile) {
+  dumps(configFile) {
     const obj = Object.fromEntries(this.mapper);
-    await fs.writeFile(configFile, JSON.stringify(obj, null, 4));
+    fs.writeFileSync(configFile, JSON.stringify(obj, null, 4));
   }
 
-  async loads(configFile) {
-    let result = await fs.readFile(configFile, { encoding: "utf8" });
+  loads(configFile) {
+    let result = fs.readFileSync(configFile, { encoding: "utf8" });
     result = new Map(Object.entries(JSON.parse(result)));
     this.mapper = result;
   }

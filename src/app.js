@@ -13,4 +13,9 @@ cli
   .action(actions.init);
 cli.command("stop").description("Stop Forceflow daemon.").action(actions.stop);
 
+cli
+  .command("submit <file>")
+  .description("Submit a solution to Codeforces")
+  .action(actions.submit);
+
 cli.parse();
