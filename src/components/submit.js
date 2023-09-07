@@ -106,16 +106,7 @@ function Submit({ solutionPath }) {
   const [succesfullLogin, setSuccesfullLogin] = useState(false);
 
   const solution = useMemo(() => {
-    const cwd = process.cwd();
-    const problem = loadProblem(cwd);
-    const mapper = new LanguageMapper();
-    mapper.loads(LANGS_FILE);
-
-    const extension = path.extname(solutionPath).slice(1);
-    const language = mapper.getLangConfig(extension);
-    const solution = new Solution(solutionPath, language, problem);
-
-    return solution;
+    return loadSolutionFromFile(solutionPath);
   }, []);
 
   useEffect(() => {
