@@ -2,6 +2,8 @@ import { initDaemon, stopDaemon } from "./daemon.js";
 import { SuccessMessage, ErrorMessage } from "./components/messages.js";
 import { render } from "ink";
 import { Submit } from "./components/submit.js";
+import open from "open";
+import { loadProblem } from "./entities/Problem.js";
 
 function init() {
   let component = (
@@ -35,4 +37,19 @@ async function submit(solutionPath) {
   render(<Submit solutionPath={solutionPath} />);
 }
 
-export { init, stop, submit };
+async function mysubs() {
+  const cwd = process.cwd();
+  const problem = loadProblem(cwd);
+
+  if (!problem) {
+    render(<ErrorMessage msg={"Not inside a problem folder"} />);
+    return;
+  }
+
+  const contest = problem.contest;
+  await open(`http://codeforces.com/${contest.type}/${contest.id}/my`);
+
+  render(<SuccessMessage msg={"Opened my submissions"} />);
+}
+
+export { init, stop, submit, mysubs };

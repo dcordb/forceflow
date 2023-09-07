@@ -18,4 +18,9 @@ cli
   .description("Submit a solution to Codeforces")
   .action(actions.submit);
 
+cli
+  .command("my")
+  .description("Open my submissions in a browser")
+  .action(actions.mysubs);
+
 cli.parse();
