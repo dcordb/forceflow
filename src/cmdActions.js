@@ -112,7 +112,9 @@ function test(solutionPath) {
       return;
     }
 
-    const differences = diff.diffLines(expectedOutput, actualOutput);
+    const differences = diff.diffLines(expectedOutput, actualOutput, {
+      ignoreWhitespace: true,
+    });
 
     const hasDifferences = differences.some(
       (part) => part.added || part.removed
@@ -129,8 +131,10 @@ function test(solutionPath) {
           : part.removed
           ? chalk.red
           : chalk.grey;
-        process.stderr.write(color(part.value));
+        console.log(color(part.value));
       });
+
+      console.log();
     }
   }
 }
