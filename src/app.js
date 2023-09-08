@@ -28,4 +28,11 @@ cli
   .description("Run a solution against testcases")
   .action(actions.test);
 
+cli
+  .command("stress <failingSolution> <bruteSolution> <generator>")
+  .description(
+    "Stress test the <failingSolution> with the <bruteSolution> using a generator. Uses already compiled executables for each one."
+  )
+  .action(actions.stressTesting);
+
 cli.parse();

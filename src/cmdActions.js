@@ -10,6 +10,7 @@ import path from "node:path";
 import { execSync } from "node:child_process";
 import * as diff from "diff";
 import chalk from "chalk";
+import { StressTesting } from "./components/stress.js";
 
 function init() {
   let component = (
@@ -139,4 +140,14 @@ function test(solutionPath) {
   }
 }
 
-export { init, stop, submit, mysubs, test };
+function stressTesting(failingSolution, bruteSolution, generator) {
+  render(
+    <StressTesting
+      failingSolution={failingSolution}
+      bruteSolution={bruteSolution}
+      generator={generator}
+    />
+  );
+}
+
+export { init, stop, submit, mysubs, test, stressTesting };
